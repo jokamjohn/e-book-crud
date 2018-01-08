@@ -20,17 +20,19 @@ export class AddItem extends React.Component {
     event.preventDefault();
     const {name, price} = this.state;
     this.props.onSubmit(name, price);
+    this.setState({name: "", price: 0})
   };
 
   render() {
+    const {name, price} = this.state;
     return (
         <div className="row justify-content-center">
           <form className="form-inline" onSubmit={this.onSubmit}>
             <input type="text" name="name" className="form-control mb-2 mr-sm-2" placeholder="Item"
-                   onChange={this.onChange} required/>
+                   onChange={this.onChange} value={name} required/>
             <div className="input-group mb-2 mr-sm-2">
               <input type="number" name="price" className="form-control" placeholder="Price" onChange={this.onChange}
-                     required/>
+                     value={price} required/>
             </div>
             <button type="submit" className="btn btn-primary mb-2 pxy-4">Save</button>
           </form>
@@ -43,6 +45,8 @@ export class AddItem extends React.Component {
 //Add a constructor method.
 //Initial state with an object containing name and price with defaults.
 //Add name attributes to both inputs the name and the price.
+//Add the value attribute to both input elements and use destructing to get the name and price
+//from state and set them to the value attributes respectively.
 //Define the onChange function which accepts event as its only parameter. This function will be attached to the
 //onChange event handler for the input elements and whenever a user types or deletes a character within the
 //input element the state of the component will be changed. From the method we get the value in the input field
@@ -61,5 +65,8 @@ export class AddItem extends React.Component {
 //This function accepts one parameter the event and within it event.preventDefault() is called so that
 //the default behavior of the button is disabled.
 //The name and price of the item is then got from state and then the obSubmit of the parent component
-//is called with the name and price of the item. This finishes the saving of the item to the array of
+//is called with the name and price of the item.
+//Set the name back to an empty string and price to 0 by setting a new state. this will reset the values
+//within the input fields.
+//This finishes the saving of the item to the array of
 //items in the parent component state and since state changes, the new item is shown in the browser.
