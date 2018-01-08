@@ -11,7 +11,20 @@ export class ItemCard extends React.Component {
     }
   }
 
-  toggleEdit = () => this.setState({isEditing: !this.state.isEditing});
+  toggleEdit = () => {
+    this.setState({
+      isEditing: !this.state.isEditing,
+      name: this.props.item.name,
+      price: this.props.item.price
+    });
+  };
+
+  onChange = event => {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    this.setState({[name]: value});
+  };
 
   render() {
     const {isEditing, name, price} = this.state;
@@ -24,9 +37,9 @@ export class ItemCard extends React.Component {
                   ?
                   <div className="mb-4">
                     <input type="text" name="name" className="form-control mb-2 mr-sm-2" placeholder="Item"
-                           value={name} required/>
+                           value={name} onChange={this.onChange} required/>
                     <input type="number" name="price" className="form-control" placeholder="Price"
-                           value={price} required/>
+                           value={price} onChange={this.onChange} required/>
                   </div>
                   :
                   <div>
@@ -91,5 +104,15 @@ ItemCard.propTypes = {
 //Using the isEditing boolean from state we show the name and price input fields(true) or
 //the name h4  and price(false). as shown in the code.
 //At this point we cannot change the name/price nothing can be deleted or added in the input fields.
+
+
+//To solve the above problems we define an onChange function and attach to the onChange event
+//handler of the input elements as we previous in the AddItem component.
+//The text in the name input field and numbers in the price input fields can now be edited.
+//Though you will notice that when you change the input field contents and then click cancel the
+//content of the name/price change.
+//To fix this we modify the toggleEdit method to set the name and price to their previous values.
+
+
 
 
