@@ -41,6 +41,18 @@ class App extends Component {
     this.setState({items: items});
   };
 
+  onUpdate = (name, price, itemIndex) => {
+    const item = {
+      name,
+      price
+    };
+    const items = [
+      ...this.state.items.filter((item, index) => index !== itemIndex),
+      item
+    ];
+    this.setState({items: items});
+  };
+
   render() {
     return <div>
       <Nav/>
@@ -56,7 +68,7 @@ class App extends Component {
         <div className="row">
           {
             this.state.items.map((item, index) =>
-                <ItemCard key={index} image={image} item={item}/>
+                <ItemCard key={index} image={image} item={item} index={index} onUpdate={this.onUpdate}/>
             )
           }
         </div>

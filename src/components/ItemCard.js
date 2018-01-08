@@ -13,9 +13,7 @@ export class ItemCard extends React.Component {
 
   toggleEdit = () => {
     this.setState({
-      isEditing: !this.state.isEditing,
-      name: this.props.item.name,
-      price: this.props.item.price
+      isEditing: !this.state.isEditing
     });
   };
 
@@ -24,6 +22,14 @@ export class ItemCard extends React.Component {
     const value = target.value;
     const name = target.name;
     this.setState({[name]: value});
+  };
+
+  onUpdate = event => {
+    event.preventDefault();
+    this.toggleEdit();
+    const {name, price} = this.state;
+    const {index} = this.props;
+    this.props.onUpdate(name, price, index);
   };
 
   render() {
@@ -57,7 +63,7 @@ export class ItemCard extends React.Component {
                 {isEditing
                     ?
                     <div>
-                      <button type="button" className="btn btn-primary mr-2">Update</button>
+                      <button type="button" className="btn btn-primary mr-2" onClick={this.onUpdate}>Update</button>
                       <button type="button" className="btn btn-primary" onClick={this.toggleEdit}>Cancel</button>
                     </div>
                     :
@@ -79,7 +85,9 @@ ItemCard.propTypes = {
   item: PropTypes.shape({
     name: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired
-  })
+  }),
+  index: PropTypes.number.isRequired,
+  onUpdate: PropTypes.func.isRequired,
 };
 
 //Convert ItemCard component into a class component
@@ -99,7 +107,6 @@ ItemCard.propTypes = {
 //When the edit button is clicked the text of the buttons changes to update/cancel.
 //When cancel is clicked the text of the buttons changes back to edit/delete.
 
-//Add name and price to state and set their defaults to the name and price from the props.
 
 //Using the isEditing boolean from state we show the name and price input fields(true) or
 //the name h4  and price(false). as shown in the code.
@@ -112,6 +119,22 @@ ItemCard.propTypes = {
 //Though you will notice that when you change the input field contents and then click cancel the
 //content of the name/price change.
 //To fix this we modify the toggleEdit method to set the name and price to their previous values.
+
+//To update the name and price if they change we need to know the index of the item in the array
+//we pass in the index as a prop to the ItemCard component.
+
+//First we create an onUpdate function in the App component which accepts name, price and the index of the
+//item in the array.
+//create an items array using the spread operator and also the filter function which returns all items
+//apart from the item who index is passed in. then the edited item is then added to the items array
+//which then is used to set state which updates the state.
+//this onUpdate function is passed it as props to the ItemCard and then added to the proptypes section below
+//another onUpdate function is defined in the ItemCard component.
+//All this does is calling the toggleEdit function to change the isEditing boolean so that the buttons change.
+//Then get the name and price from the state, also get the index from the props and then call the parent
+//onUpdate function from the props passed in.
+//This onUpdate function is set as the onClick callback to the update button. Check out the working in the web
+//browser.
 
 
 
