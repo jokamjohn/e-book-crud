@@ -32,6 +32,13 @@ export class ItemCard extends React.Component {
     this.props.onUpdate(name, price, index);
   };
 
+  onDelete = event => {
+    event.preventDefault();
+    const {index} = this.props;
+    console.log(index);
+    this.props.onDelete(index);
+  };
+
   render() {
     const {isEditing, name, price} = this.state;
     return (
@@ -53,7 +60,7 @@ export class ItemCard extends React.Component {
                     <div className="row justify-content-center mb-4">
                       <p className="card-text">
                         <span className="badge badge-secondary py-2 mr-5">Price</span>
-                        <span>${price}</span>
+                        <span>${this.props.index}</span>
                       </p>
                     </div>
                   </div>
@@ -69,7 +76,7 @@ export class ItemCard extends React.Component {
                     :
                     <div>
                       <button type="button" className="btn btn-primary mr-2" onClick={this.toggleEdit}>Edit</button>
-                      <button type="button" className="btn btn-primary">Delete</button>
+                      <button type="button" className="btn btn-primary" onClick={this.onDelete}>Delete</button>
                     </div>
                 }
               </div>
@@ -88,6 +95,7 @@ ItemCard.propTypes = {
   }),
   index: PropTypes.number.isRequired,
   onUpdate: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 //Convert ItemCard component into a class component
@@ -135,6 +143,19 @@ ItemCard.propTypes = {
 //onUpdate function from the props passed in.
 //This onUpdate function is set as the onClick callback to the update button. Check out the working in the web
 //browser.
+
+//Delete
+//define a delete method which accepts an index as its only parameter in the parent component
+//within declare a const named items and use the slice method to remove the deleted item
+//from the items in state.
+//Define an onDelete method within ItemCard component which accepts event as its only
+//parameter.
+//prevent the default behavior of the button and then destruct the index out of the props object.
+//add onDelete to the proptypes
+//call ondelete from props and pass it the index of the item to be deleted.
+//define the onclick callback on the delete button and pass it the ondelete method in the
+//ItemCard component.
+//Pass the onDelete from the parent component as an ondelete prop to the ItemCard.
 
 
 

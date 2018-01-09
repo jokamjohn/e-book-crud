@@ -53,7 +53,17 @@ class App extends Component {
     this.setState({items: items});
   };
 
+  onDelete = index => {
+    const items = this.state.items.slice();
+    // console.log(index);
+    items.splice(index, 1);
+    // console.log(items);
+    this.setState({items: items});
+  };
+
   render() {
+    console.log('render called');
+    console.log(this.state.items);
     return <div>
       <Nav/>
 
@@ -68,7 +78,8 @@ class App extends Component {
         <div className="row">
           {
             this.state.items.map((item, index) =>
-                <ItemCard key={index} image={image} item={item} index={index} onUpdate={this.onUpdate}/>
+                <ItemCard key={index} image={image} item={item} index={index} onUpdate={this.onUpdate}
+                          onDelete={this.onDelete}/>
             )
           }
         </div>
