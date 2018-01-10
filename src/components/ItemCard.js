@@ -60,7 +60,7 @@ export class ItemCard extends React.Component {
                     <div className="row justify-content-center mb-4">
                       <p className="card-text">
                         <span className="badge badge-secondary py-2 mr-5">Price</span>
-                        <span>${this.props.index}</span>
+                        <span>${this.props.item.price}</span>
                       </p>
                     </div>
                   </div>
@@ -90,8 +90,9 @@ export class ItemCard extends React.Component {
 ItemCard.propTypes = {
   image: PropTypes.string.isRequired,
   item: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired
+    price: PropTypes.string.isRequired
   }),
   index: PropTypes.number.isRequired,
   onUpdate: PropTypes.func.isRequired,

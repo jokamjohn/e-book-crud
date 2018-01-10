@@ -13,20 +13,24 @@ class App extends Component {
     this.state = {
       items: [
         {
+          id: 1,
           name: "Noodles",
-          price: 15
+          price: "15"
         },
         {
+          id: 2,
           name: "Mangoes",
-          price: 10
+          price: "10"
         },
         {
+          id: 3,
           name: "Oranges",
-          price: 20
+          price: "20"
         },
         {
+          id: 4,
           name: "Passion Fruits",
-          price: 14
+          price: "14"
         }
       ]
     }
@@ -54,16 +58,15 @@ class App extends Component {
   };
 
   onDelete = index => {
-    const items = this.state.items.slice();
-    // console.log(index);
-    items.splice(index, 1);
-    // console.log(items);
-    this.setState({items: items});
+    this.setState({
+      items: [
+        ...this.state.items.slice(0, index),
+        ...this.state.items.slice(index + 1)
+      ]
+    });
   };
 
   render() {
-    console.log('render called');
-    console.log(this.state.items);
     return <div>
       <Nav/>
 
@@ -78,7 +81,7 @@ class App extends Component {
         <div className="row">
           {
             this.state.items.map((item, index) =>
-                <ItemCard key={index} image={image} item={item} index={index} onUpdate={this.onUpdate}
+                <ItemCard key={item.id} image={image} item={item} index={index} onUpdate={this.onUpdate}
                           onDelete={this.onDelete}/>
             )
           }
