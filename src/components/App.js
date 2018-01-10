@@ -11,6 +11,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: "",
+      price: "",
       items: [
         {
           id: 1,
@@ -36,27 +38,88 @@ class App extends Component {
     }
   }
 
-  onSubmit = (name, price) => {
-    const item = {
-      name,
-      price
-    };
-    const items = [...this.state.items, item];
-    this.setState({items: items});
+  /**
+   * Handle input changes in the AddItem component.
+   * @param event
+   */
+  handleInputChange = event => {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value
+    });
   };
 
-  onUpdate = (name, price, itemIndex) => {
-    const item = {
-      name,
-      price
-    };
-    const items = [
-      ...this.state.items.filter((item, index) => index !== itemIndex),
-      item
-    ];
-    this.setState({items: items});
+  /**
+   * Add an item to state.
+   * @param event
+   */
+  addItem = event => {
+    event.preventDefault();
+    const {name, price} = this.state;
+    const itemsInState = this.state.items;
+    const itemsArrayLength = itemsInState.length;
+    const id = itemsArrayLength ? (itemsInState[itemsArrayLength - 1].id + 1) : 1;
+    this.setState({
+      items: [
+        ...itemsInState,
+        Object.assign({}, {
+          id,
+          name,
+          price
+        })
+      ],
+      name: "",
+      price: ""
+    })
   };
 
+  /**
+   * Toggle the isEditing property of an item when the Edit button
+   * within ItemCard is clicked.
+   * @param index
+   */
+  toggleItemEditing = index => {
+    this.setState({
+      items: this.state.items.map((item, itemIndex) => {
+        if (itemIndex === index) {
+          return {
+            ...item,
+            isEditing: !item.isEditing
+          }
+        }
+        return item;
+      })
+    });
+  };
+
+  /**
+   * Update the Name and/or Price of an item.
+   * @param event
+   * @param index
+   */
+  handleItemUpdate = (event, index) => {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    this.setState({
+      items: this.state.items.map((item, itemIndex) => {
+        if (itemIndex === index) {
+          return {
+            ...item,
+            [name]: value
+          }
+        }
+        return item;
+      })
+    });
+  };
+
+  /**
+   * Delete an item from state
+   * @param index Index of the item to be deleted.
+   */
   onDelete = index => {
     this.setState({
       items: [
@@ -67,26 +130,37 @@ class App extends Component {
   };
 
   render() {
+    const {name, price} = this.state;
     return <div>
       <Nav/>
 
       <Jumbtron/>
 
       <div className="container pt-4">
-
-        <AddItem onSubmit={this.onSubmit}/>
+        <AddItem
+            onSubmit={this.addItem}
+            onChange={this.handleInputChange}
+            name={name}
+            price={price}
+        />
 
         <h1 className="display-4 my-4 text-center text-muted">Items</h1>
 
         <div className="row">
           {
             this.state.items.map((item, index) =>
-                <ItemCard key={item.id} image={image} item={item} index={index} onUpdate={this.onUpdate}
-                          onDelete={this.onDelete}/>
+                <ItemCard
+                    key={item.id}
+                    image={image}
+                    item={item}
+                    index={index}
+                    toggleEditing={() => this.toggleItemEditing(index)}
+                    onChange={this.handleItemUpdate}
+                    onDelete={() => this.onDelete(index)}
+                />
             )
           }
         </div>
-
         <hr/>
         <Footer/>
       </div>
